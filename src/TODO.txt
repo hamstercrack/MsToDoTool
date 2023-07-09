@@ -1,12 +1,8 @@
 TODO 7/8/23:
 
-BACKLOG:
-14) OPTIMIZE: parallel tasks so we can export multiple lists at a time
++++ BACKLOG:
 
-15) purge command: (Writes to API) cleanup old "complete" tasks according to some safe criteria. 
-- E.g. repeating tasks, oldest except last "X"
-- by default preview mode
-- option to commit
+14) OPTIMIZE: parallel tasks so we can export multiple lists at a time
 
 16) TODO_EXCLUDECOMPLETED: All Commands - Option: exclude completed
 
@@ -17,15 +13,30 @@ BACKLOG:
 
 19) EXE: rename to MSTTool
 
-REGRESS:
+21) Recovery Detect: when a __Deleted task is recovered, move it to __Recovered
+- REF: HandleRemainingItems
+- TD: need to always load the __Deleted and __Recovered files
+
++++ REQUIRES WRITE SUPPORT:
+
+15) purge command: (Writes to API) cleanup old "complete" tasks according to some safe criteria. 
+- E.g. repeating tasks, oldest except last "X"
+- by default preview mode
+- option to commit
+
+22) Undelete Specific Task: useful for when we detect a Task has been erroneously deleted
+
+
++++ REGRESS:
+
 20) Cross-Platform: test if still works on other platforms
 
 P2:
 13) diff command: compare two export folders 
 
 
-OPTIONAL:
-6.3) Lists: cache mapping from displayName to Id so don't have to retrieve each time [TODO_LISTARGUMENT]
++++ OPTIONAL:
 
+6.3) Lists: cache mapping from displayName to Id so don't have to retrieve each time [TODO_LISTARGUMENT]
 
 
