@@ -1,5 +1,9 @@
-﻿using System;
+﻿// HACK_KEY2: drp070823 - in case task was "renamed" as well as "Moved", try to find match using createdDateTime only.
+
+using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Text.Json.Serialization;
 using Microsoft.Graph;
@@ -39,7 +43,7 @@ namespace Todo.Core.Model
       ]
     },
     */
-    public class TodoItem
+    public class TodoItem : IJsonOnDeserialized
     {
         public class Body
         {
@@ -74,5 +78,33 @@ namespace Todo.Core.Model
         {
             return title;
         }
+
+        // TECH: invoked through IJsonOnDeserialized
+        public void OnDeserialized()
+        {
+            Key = new TodoItemKey(this);
+            Key2 = new TodoItemKey2(this);
+        }
+
+        #region Exported
+
+        public TodoItemKey Key { get; private set; }
+
+        // HACK_KEY2
+        public TodoItemKey2 Key2 { get; private set; }
+
+        public TodoList List { get; private set; }
+
+        public FileInfo FileInfo { get; private set; }
+
+        public void OnTodoItemExported(TodoList list, FileInfo fi)
+        {
+            if (FileInfo != null)
+                throw new InvalidOperationException();
+            List = list;
+            FileInfo = fi;
+        }
+
+        #endregion
     }
 }

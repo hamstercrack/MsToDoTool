@@ -1,7 +1,8 @@
 ### TODO: define token/listid in settings and reference {{token}}
+### USAGE: token comes from authResult.AccessToken
 
 ### pull all lists
-GET https://graph.microsoft.com/v1.0/me/todo/lists
+GET https://graph.microsoft.com/v1.0/me/todo/lists?$skip=50
 Authorization: Bearer {{token}}
 
 ### pull a list

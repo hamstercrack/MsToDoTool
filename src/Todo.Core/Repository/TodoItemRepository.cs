@@ -1,17 +1,14 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Graph;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Runtime.Serialization.Json;
-using System.Text;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Todo.Core.Interfaces;
 using Todo.Core.Model;
-using static Microsoft.Graph.Constants;
 
 namespace Todo.Core.Repository
 {
@@ -88,13 +85,16 @@ namespace Todo.Core.Repository
                 return Lists;
 
             Lists ??= new();
-            var uri = "lists";
+            // BUG_LISTS: drp060923 - using "lists/delta" as workaround since "lists" fails to return all
+            var uri = "lists/delta";
             while (uri != null)
             {
                 var response = await Client.RequestAsync(uri);
                 // this parses the json and populates the repo
                 uri = AddListsFromSerialized(response);
             }
+
+            Console.WriteLine("Lists Retrieved: {0}", Lists.Count);
 
             return Lists;
         }
@@ -118,5 +118,24 @@ namespace Todo.Core.Repository
             Lists.AddRange(jsonLists.value);
             return jsonLists.NextLink;
         }
+
+        #region Exported
+
+        private TodoItemMap _exportedMap = new TodoItemMap();
+
+        // RETURN: may be null
+        public List<TodoItem> FindTodoItems(TodoItemKey key)
+        {
+            return _exportedMap.GetTodoItemsSafe(key);
+        }
+
+        public void OnTodoItemExported(TodoList list, TodoItem item, FileInfo fi)
+        {
+            // TODO: drp070823 - may not need
+            item.OnTodoItemExported(list, fi);
+            _exportedMap.AddTodoItem(item);
+        }
+
+        #endregion
     }
 }
