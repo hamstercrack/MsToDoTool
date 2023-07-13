@@ -185,12 +185,16 @@ namespace Todo.MSTTool.Commands
                         // LOW: drp070823 - mark matches as "Moved"?
                         // PRE: matches.Count>0
                         HandleMovedItem(list, fi);
+                        // TODO: drp071223 - log all matches
+                        var anyMatch = matches.First();
+                        Console.WriteLine("+ {0}/{1} => {2}/{3}", listName, item.title, anyMatch.List.displayName, anyMatch.title);
                     }
                     else
                     {
                         // item was (probably) not "Moved", so apply DeleteHandling
                         // TECH: item.List is not set 
                         HandleDeletedItem(list, fi);
+                        Console.WriteLine("+ {0}/{1}", listName, item.title);
                     }
                 }
 
