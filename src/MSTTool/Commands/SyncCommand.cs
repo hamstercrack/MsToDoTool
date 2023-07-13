@@ -206,7 +206,7 @@ namespace Todo.MSTTool.Commands
 
         protected virtual void HandleMovedItem(TodoList list, FileInfo fi)
         {
-            Console.Write("Sync.Moved:{0}", fi.Name);
+            Console.Write("Sync.Moved:{0}/{1}", list.displayName, fi.Name);
 
             // TODO: deserialize the file to get the task.title
             switch (DeleteHandling)
@@ -216,7 +216,7 @@ namespace Todo.MSTTool.Commands
                     break;
                 case EDeleteHandling.MoveToDeletedFolder:
                 case EDeleteHandling.HardDelete:
-                    Console.WriteLine(" [Delete]");
+                    Console.WriteLine(" [DeleteOriginal]");
                     fi.Delete();
                     break;
                 default:
@@ -226,7 +226,7 @@ namespace Todo.MSTTool.Commands
 
         protected virtual void HandleDeletedItem(TodoList list, FileInfo fi)
         {
-            Console.Write("Sync.Delete:{0}", fi.Name);
+            Console.Write("Sync.Delete:{0}/{1}", list.displayName, fi.Name);
 
             // TODO: deserialize the file to get the task.title
             switch (DeleteHandling)
@@ -247,7 +247,7 @@ namespace Todo.MSTTool.Commands
                     fi.MoveTo(deletedItemFileName, overwrite: true);
                     break;
                 case EDeleteHandling.HardDelete:
-                    Console.WriteLine(" [Delete]");
+                    Console.WriteLine(" [HardDelete]");
                     fi.Delete();
                     break;
                 default:
