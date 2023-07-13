@@ -62,7 +62,7 @@ namespace Todo.Core.Model
 
         public override bool Equals(object obj)
         {
-            if (obj is not TodoItemKey other)
+            if (obj is not TodoItemKey2 other)
                 return false;
             return createdDateTime == other.createdDateTime;
         }
